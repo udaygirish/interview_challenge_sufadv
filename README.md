@@ -6,11 +6,11 @@ It's not lost on us that you're spending valuable time. We promise to make this 
 There has recently been an explosion in imitation learning research and Transformers
 have been key in some of these impressive policies. One piece of work we find interesting is
 [Body Transformers](https://arxiv.org/pdf/2408.06316), which adds an inductive bias to guide
-the attention mechanism. We'd like for you to read the paper, implement the BoT-Mix version,
-and run an inference loop (with untrained weights) on the given dataset of recorded expert demonstrations.
-
-The goal of this model (as of most models in imitation learning) is to predict an action given
+the attention mechanism. The goal of this model (as of most models in imitation learning) is to predict an action given
 its current state. An action is the target state the robot will be commanded to go to.
+
+We'd like for you to read the paper, implement the BoT-Mix version in PyTorch,
+and run an inference loop (with untrained weights) on the given dataset of recorded expert demonstrations.
 
 ## Context / Assumptions:
 
@@ -18,6 +18,10 @@ its current state. An action is the target state the robot will be commanded to 
 1. We'll use joint angles to represent the state of the robot.
 2. There are no other sensors, such as cameras.
 3. You will only need to predict one action at a time.
+4. Feel free to use PyTorch's `TransformerLayer` and `TransformerEncoder`.
+
+The graph for this robot will be each joint connecting to the next (`0 -> 1 -> 2 -> ...`)
+and the gripper being connected to all of them (bonus points if you can reason about why this does/doesn't make sense).
 
 ## Dataset:
 
