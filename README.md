@@ -12,7 +12,7 @@ its current state. An action is the target state the robot will be commanded to 
 We'd like for you to read the paper, implement the BoT-Mix version in PyTorch,
 and run an inference loop (with untrained weights) on the given dataset of recorded expert demonstrations.
 
-## Context / Assumptions:
+## Context / Assumptions
 
 0. The embodiement is a 6-DoF robotic arm with a gripper, so 7-dim state and action spaces.
 1. We'll use joint angles to represent the state of the robot.
@@ -23,7 +23,7 @@ and run an inference loop (with untrained weights) on the given dataset of recor
 The graph for this robot will be each joint connecting to the next (`0 -> 1 -> 2 -> ...`)
 and the gripper being connected to all of them (bonus points if you can reason about why this does/doesn't make sense).
 
-## Dataset:
+## Dataset
 
 The dataset contains 3 demonstrations of us puppeting the robot to pick up objects. It's is in the
 [zarr](https://zarr.readthedocs.io/en/stable/) format and is structured as follows:
@@ -40,6 +40,6 @@ meta/
 If `episode_end_idx[0] = 34`, that indicates `joints[:34], action[:34]` belong to episode `0`. 
 Naturally, we don't want to infer actions of the next episode with states of the current one.
 
-## Submitting
+## Code Submission
 
 Feel free to either make a fork of this repo or email us your code.
