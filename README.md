@@ -38,8 +38,8 @@ meta/
 ```
 
 If `episode_end_idx[0] = 34`, that indicates `joints[:34], action[:34]` belong to episode `0`. 
-Natuarlly, we don't want to infer actions of the next episode with states of the current one.
+Naturally, we don't want to infer actions of the next episode with states of the current one.
 
 ## Submitting
 
-Feel free to make a branch on this repo to push your code to.
+Feel free to either make a fork of this repo or email us your code.
