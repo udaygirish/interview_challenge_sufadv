@@ -21,18 +21,20 @@ its current state. An action is the target state the robot will be commanded to 
 
 ## Dataset:
 
-The dataset is in zarr format and is structured as follows:
+The dataset contains 3 demonstrations of us puppeting the robot to pick up objects. It's is in zarr format 
+and is structured as follows:
 
 ```
 data/
-    joints - timeseries of joint positions; 7-dim arrays representing the 6 joint angles (-3.14/+3.14, rads) and 1 gripper pose (0-1, open/close).
+    joints - timeseries of joint positions; 7-dim arrays representing the 6 joint 
+        angles (-3.14/+3.14, rads) and 1 gripper pose (0-1, open/close).
     action - timeseries of actions; same as the above, but the commands sent to the
 meta/
     episode_end_idx - the last joints/action index in the timeseries for an episode.
 ```
 
-If `episode_end_idx[0] = 34`, that indicates `joints[:34], action[:34]` belong to episode `0`.
-The dataset contains 3 demonstrations of us puppeting the robot to pick up objects.
+If `episode_end_idx[0] = 34`, that indicates `joints[:34], action[:34]` belong to episode `0`. 
+Natuarlly, we don't want to infer actions of the next episode with states of the current one.
 
 ## Submitting
 
