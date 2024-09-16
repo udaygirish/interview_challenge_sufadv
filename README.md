@@ -28,7 +28,7 @@ and is structured as follows:
 data/
     joints - timeseries of joint positions; 7-dim arrays representing the 6 joint 
         angles (-3.14/+3.14, rads) and 1 gripper pose (0-1, open/close).
-    action - timeseries of actions; same as the above, but the commands sent to the
+    action - timeseries of actions; same as the above.
 meta/
     episode_end_idx - the last joints/action index in the timeseries for an episode.
 ```
