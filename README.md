@@ -5,7 +5,7 @@ It's not lost on us that you're spending valuable time. We promise to make this 
 
 There has recently been an explosion in imitation learning research and Transformers
 have been key in some of these impressive policies. One piece of work we find interesting is
-(Body Transformers)[https://arxiv.org/pdf/2408.06316], which adds an inductive bias to guide
+[Body Transformers](https://arxiv.org/pdf/2408.06316), which adds an inductive bias to guide
 the attention mechanism. We'd like for you to read the paper, implement the BoT-Mix version,
 and run an inference loop (with untrained weights) on the given dataset of recorded expert demonstrations.
 
