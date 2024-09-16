@@ -25,8 +25,8 @@ and the gripper being connected to all of them (bonus points if you can reason a
 
 ## Dataset:
 
-The dataset contains 3 demonstrations of us puppeting the robot to pick up objects. It's is in zarr format 
-and is structured as follows:
+The dataset contains 3 demonstrations of us puppeting the robot to pick up objects. It's is in the
+[zarr](https://zarr.readthedocs.io/en/stable/) format and is structured as follows:
 
 ```
 data/
