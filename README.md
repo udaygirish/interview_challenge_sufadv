@@ -11,6 +11,7 @@ its current state. An action is the target state the robot will be commanded to 
 
 We'd like for you to read the paper, implement the BoT-Mix version in PyTorch,
 and run an inference loop (with untrained weights) on the given dataset of recorded expert demonstrations.
+Pages 1 - 5 of the paper should have all the info you need.
 
 ## Context / Assumptions
 
