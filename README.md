@@ -13,6 +13,9 @@ We'd like for you to read the paper, implement the BoT-Mix version in PyTorch,
 and run an inference loop (with untrained weights) on the given dataset of recorded expert demonstrations.
 Pages 1 - 5 of the paper should have all the info you need.
 
+(While the code for this is open-source, we'll rely on an honor code that you won't copy it ;) 
+Also, your implementation would ideally be simpler.)
+
 ## Context / Assumptions
 
 0. The embodiement is a 6-DoF robotic arm with a gripper, so 7-dim state and action spaces.
