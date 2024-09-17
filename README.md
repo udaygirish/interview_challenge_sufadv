@@ -13,7 +13,7 @@ We'd like for you to read the paper, implement the BoT-Mix version in PyTorch,
 and run an inference loop (with untrained weights) on the given dataset of recorded expert demonstrations.
 Pages 1 - 5 of the paper should have all the info you need.
 
-(While the code for this is open-source, we'll rely on an honor code that you won't copy it ;) 
+(While the code for this is open-source, we'll rely on an honor code that you won't use it ;) 
 Also, your implementation would ideally be simpler.)
 
 ## Context / Assumptions
