@@ -30,6 +30,19 @@ sys.dont_write_bytecode = True
 
 
 def inference_loop(model, joints, actions, episode_end_idx, device):
+    """
+    Perform inference on a model over multiple episodes and calculate the average mean squared error (MSE).
+
+    Args:
+        model (torch.nn.Module): The neural network model to evaluate.
+        joints (list or np.ndarray): A list or array of joint states for each time step.
+        actions (list or np.ndarray): A list or array of actions corresponding to each joint state.
+        episode_end_idx (list of int): Indices indicating the end of each episode within the joints and actions lists.
+        device (torch.device): The device (CPU or CUDA:x)to perform the computations on.
+
+    Returns:
+        float: The average mean squared error (MSE) over all episodes.
+    """
     model.eval()
     total_mse = 0
     num_samples = 0
@@ -54,6 +67,20 @@ def inference_loop(model, joints, actions, episode_end_idx, device):
     return avg_mse
 
 def train_loop(model, joints, actions, episode_end_idx, optimizer, device):
+    """
+    Trains the given model using the provided joint states and actions.
+
+    Args:
+        model (torch.nn.Module): The neural network model to be trained.
+        joints (list or np.ndarray): A list or array of joint states.
+        actions (list or np.ndarray): A list or array of actions corresponding to the joint states.
+        episode_end_idx (list of int): Indices indicating the end of each episode.
+        optimizer (torch.optim.Optimizer): The optimizer used for updating the model parameters.
+        device (torch.device): The device (CPU or CUDA:x) on which the computations will be performed.
+
+    Returns:
+        float: The average loss over all training samples.
+    """
     # Train function for Future Implementation
     model.train()
     total_loss = 0
@@ -93,7 +120,7 @@ def main(args):
     adjacency_matrix = adjacency_matrix_torch(config['robot']['num_nodes'],
                                             config['robot']['gripper_joint'],
                                             config['robot']['gripper_link_to_all_joints'])
-    # Create the Model
+    # Create the Model based on the KV Cache Argument
     if args.kvcache:
         model = BoTMixWithKVCache(
             num_joints=config['robot']['num_nodes'], 

@@ -1,15 +1,31 @@
 import logging 
 import sys 
 from datetime import datetime as dt 
-
+import os 
 
 # Prevent Python from genrating a .pyc file
 sys.dont_write_bytecode = True
 
 
 def setup_logger(log_file="app.log", log_level = logging.DEBUG):
+    def setup_logger(log_file="app.log", log_level=logging.DEBUG):
+        """
+        Sets up a logger with both file and console handlers.
+        Args:
+            log_file (str): The name of the log file. Default is "app.log".
+            log_level (int): The logging level. Default is logging.DEBUG.
+        Returns:
+            logging.Logger: Configured logger instance.
+        The logger will log messages to a file in the "logs" directory with a timestamped filename
+        and also output to the console. The log format includes the timestamp, logger name, log level,
+        and the log message.
+        """
     # Create or Get Logger
     log_file = "logs/" + log_file.split(".")[0] + "_" + dt.now().strftime("%Y_%m_%d_%H_%M_%S") + ".log"
+    # Create logs folder if it does not exist
+    if not os.path.exists("logs"):
+        os.makedirs("logs")
+        
     logger = logging.getLogger("body_transformer_logger")
 
     # Avoid adding the same handler multiple times

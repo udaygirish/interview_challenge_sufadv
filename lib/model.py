@@ -19,6 +19,34 @@ from lib.model_helpers import PositionalEncoding
 
 # BoT-Mix Transformer Model
 class BoTMix(nn.Module):
+    """
+    BoT-Mix Transformer Model - Custom PyTorch Implementation Using Transformer Encoder Layer.
+    Args:
+        num_joints (int): Number of joints in the input data.
+        d_model (int): Dimension of the model.
+        nhead (int): Number of heads in the multi head attention models.
+        num_layers (int): Number of sub-encoder-layers in the encoder.
+        feedforward_dim (int): Dimension of the feedforward network model.
+        adjacency_matrix (torch.Tensor): Adjacency matrix representing the joint connections.
+        dropout (float, optional): Dropout value. Default is 0.1.
+        pos_encoding (bool, optional): Whether to use positional encoding. Default is True.
+    Attributes:
+        description (str): Description of the model.
+        num_joints (int): Number of joints in the input data.
+        embedding (nn.Linear): Linear layer for embedding the input joints.
+        pos_encoding (bool): Whether to use positional encoding.
+        pos_encoder (PositionalEncoding, optional): Positional encoding layer.
+        mask (torch.Tensor): Mask created from the adjacency matrix.
+        transformer_encoder (nn.TransformerEncoder): Transformer encoder composed of multiple layers.
+        linear (nn.Linear): Linear layer to map the output to the number of joints.
+    Methods:
+        forward(x):
+            Forward pass of the model.
+            Args:
+                x (torch.Tensor): Input tensor of shape (batch_size, num_joints) or (batch_size, seq_len, num_joints).
+            Returns:
+                torch.Tensor: Output tensor of shape (batch_size, num_joints).
+    """
     
     def __init__(self, num_joints, d_model, nhead, num_layers, feedforward_dim, adjacency_matrix, dropout=0.1, pos_encoding = True):
         super(BoTMix, self).__init__()
@@ -78,6 +106,7 @@ class BoTMix(nn.Module):
 # Main Function
 # Test the Model
 def main():
+    # Test the Model with Model  Summary
     random_adjacency_matrix = np.random.randint(2, size=(7, 7))
     model = BoTMix(
         num_joints=7,

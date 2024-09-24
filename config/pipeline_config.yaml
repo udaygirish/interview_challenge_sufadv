@@ -1,3 +1,30 @@
+# Configuration file for the interview challenge project.
+# This file contains settings for the bot mix transformer, robot specifications, and data handling.
+
+# bot_mix_transformer:
+#   Configuration for the transformer model used in the bot mix.
+#   - num_heads: Number of attention heads in the transformer.
+#   - num_layers: Number of layers in the transformer.
+#   - feedforward_dim: Dimension of the feedforward network.
+#   - dropout: Dropout rate for regularization.
+#   - d_model: Dimension of the model.
+
+# robot:
+#   Specifications for the robot being used.
+#   - description: Description of the robot model.
+#   - num_joints: Number of joints in the robot.
+#   - num_nodes: Number of nodes in the robot's control system.
+#   - gripper_joint: Indicates if the robot has a gripper joint.
+#   - input_dim: Input dimension for the robot's control system.
+#   - output_dim: Output dimension for the robot's control system.
+#   - gripper_link_to_all_joints: Indicates if the gripper is linked to all joints.
+
+# data:
+#   Configuration for data handling.
+#   - path: Path to the dataset file.
+#   - batch_size: Batch size for data processing.
+
+
 bot_mix_transformer:
     num_heads : 4
     num_layers : 3

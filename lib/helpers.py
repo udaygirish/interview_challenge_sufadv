@@ -3,6 +3,17 @@ import torch
 
 
 def adjacency_matrix_torch(num_joints, gripper_joint= True, gripper_link_all_joints = True):
+    def adjacency_matrix_torch(num_joints, gripper_joint=True, gripper_link_all_joints=True):
+        """
+        Generates an adjacency matrix for a given number of joints using PyTorch.
+        Parameters:
+        num_joints (int): The number of joints in the system.
+        gripper_joint (bool, optional): If True, includes a gripper joint in the adjacency matrix. Default is True.
+        gripper_link_all_joints (bool, optional): If True and gripper_joint is True, connects the gripper to all other joints. 
+                                                  If False, connects the gripper only to the last joint. Default is True.
+        Returns:
+        torch.Tensor: A 2D tensor representing the adjacency matrix of the joints.
+        """
     adjacency_matrix = torch.zeros(num_joints, num_joints)
 
     if gripper_joint:

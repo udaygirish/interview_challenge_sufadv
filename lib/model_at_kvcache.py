@@ -18,7 +18,29 @@ from lib.model_helpers import PositionalEncoding, KVCache
 
 
 class MultiheadAttentionWithKVCache(nn.Module):
-    def __init__(self, embed_dim, num_heads, dropout=0.0):
+    """
+    MultiheadAttentionWithKVCache is a wrapper around the nn.MultiheadAttention module that 
+    supports key-value caching for efficient sequential processing.
+    Args:
+        embed_dim (int): The embedding dimension.
+        num_heads (int): The number of attention heads.
+        dropout (float, optional): Dropout probability on attention weights. Default is 0.1.
+    Methods:
+        forward(query, key, value, layer_idx, cache=None, need_weights=False):
+            Computes the multi-head attention output with optional key-value caching.
+            Args:
+                query (Tensor): The query tensor of shape (batch_size, seq_len, embed_dim).
+                key (Tensor): The key tensor of shape (batch_size, seq_len, embed_dim).
+                value (Tensor): The value tensor of shape (batch_size, seq_len, embed_dim).
+                layer_idx (int): The layer index for caching.
+                cache (KVCache, optional): An instance of KVCache for storing and retrieving cached keys and values. Default is None.
+                need_weights (bool, optional): If True, returns attention weights along with outputs. Default is False.
+            Returns:
+                Tuple[Tensor, Tensor]: A tuple containing:
+                    - attn_output (Tensor): The attention output of shape (batch_size, seq_len, embed_dim).
+                    - attn_weights (Tensor): The attention weights of shape (batch_size, num_heads, seq_len, seq_len) if need_weights is True, otherwise None.
+    """
+    def __init__(self, embed_dim, num_heads, dropout=0.1):
         super(MultiheadAttentionWithKVCache, self).__init__()
         self.multihead_attn = nn.MultiheadAttention(embed_dim, num_heads, dropout=dropout, batch_first=True)
     
@@ -34,6 +56,26 @@ class MultiheadAttentionWithKVCache(nn.Module):
         return attn_output, attn_weights
 
 class TransformerEncoderLayerWithKVCache(nn.Module):
+    """
+    TransformerEncoderLayerWithKVCache is a custom implementation of a Transformer encoder layer that includes key-value caching
+    Args:
+        d_model (int): The number of expected features in the input (required).
+        nhead (int): The number of heads in the multiheadattention models (required).
+        dim_feedforward (int, optional): The dimension of the feedforward network model (default=2048).
+        dropout (float, optional): The dropout value (default=0.1).
+
+    Methods:
+        forward(src, layer_idx, cache=None):
+            Passes the input through the encoder layer.
+
+            Args:
+                src (Tensor): The input tensor.
+                layer_idx (int): The index of the current layer.
+                cache (KVCache, optional): The key-value cache for attention computation (default=None).
+
+            Returns:
+                Tensor: The output tensor after processing through the encoder layer.
+    """
     def __init__(self, d_model, nhead, dim_feedforward=2048, dropout=0.1):
         super(TransformerEncoderLayerWithKVCache, self).__init__()
         self.self_attn = MultiheadAttentionWithKVCache(d_model, nhead, dropout=dropout)
@@ -58,6 +100,19 @@ class TransformerEncoderLayerWithKVCache(nn.Module):
         return src
 
 class TransformerEncoderWithKVCache(nn.Module):
+    """
+    TransformerEncoderWithKVCache is a custom transformer encoder that supports key-value caching.
+    Methods:
+        __init__(encoder_layer, num_layers):
+            Initializes the TransformerEncoderWithKVCache with the given encoder layer and number of layers.
+        forward(src, cache: KVCache = None):
+            Passes the input through the encoder layers. If a key-value cache is provided, it uses the cache for each layer.
+            Args:
+                src: The input tensor to the encoder.
+                cache (KVCache, optional): The key-value cache for the encoder layers. Defaults to None.
+            Returns:
+                The output tensor after passing through the encoder layers.
+    """
     def __init__(self, encoder_layer, num_layers):
         super(TransformerEncoderWithKVCache, self).__init__()
         self.layers = nn.ModuleList([encoder_layer for _ in range(num_layers)])
@@ -72,6 +127,37 @@ class TransformerEncoderWithKVCache(nn.Module):
         return src
 
 class BoTMixWithKVCache(nn.Module):
+    """
+    BoT-Mix Transformer Model with KV Cache - Custom PyTorch Implementation Using Transformer Encoder Layer.
+    Args:
+        num_joints (int): Number of joints in the input data.
+        d_model (int): Dimension of the model.
+        nhead (int): Number of heads in the multiheadattention models.
+        num_layers (int): Number of sub-encoder-layers in the encoder.
+        feedforward_dim (int): Dimension of the feedforward network model.
+        adjacency_matrix (torch.Tensor): Adjacency matrix representing the joint connections.
+        dropout (float, optional): Dropout value. Default is 0.1.
+        pos_encoding (bool, optional): Whether to use positional encoding. Default is True.
+    Attributes:
+        description (str): Description of the model.
+        num_joints (int): Number of joints in the input data.
+        embedding (nn.Linear): Linear layer for embedding the input joints.
+        pos_encoding (bool): Whether to use positional encoding.
+        pos_encoder (PositionalEncoding, optional): Positional encoding layer.
+        mask (torch.Tensor): Mask created from the adjacency matrix.
+        transformer_encoder (TransformerEncoderWithKVCache): Custom transformer encoder with KV cache.
+        linear (nn.Linear): Linear layer for output.
+        num_layers (int): Number of sub-encoder-layers in the encoder.
+        kv_cache (KVCache): Key-Value cache for the transformer encoder.
+    Methods:
+        forward(x, use_cache=False):
+            Forward pass of the model.
+            Args:
+                x (torch.Tensor): Input tensor.
+                use_cache (bool, optional): Whether to use the KV cache. Default is False.
+            Returns:
+                torch.Tensor: Output tensor.
+    """
     
     def __init__(self, num_joints, d_model, nhead, num_layers, feedforward_dim, adjacency_matrix, dropout=0.1, pos_encoding=True):
         super(BoTMixWithKVCache, self).__init__()
