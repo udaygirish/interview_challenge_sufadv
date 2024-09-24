@@ -20,8 +20,10 @@ and the gripper being connected to all of them (bonus points if you can reason a
 
 #### Answer:
 1. The Graph for the Robot joints connecting to the next sequentially does make sense as I'm assuming for a Manipulator each joint is dependent on previous position and it makes total sense to have the sequential configuration.
-2. The Gripper being connected to all of them is kind of neutral sense for me atleast. Assuming it is a parallel jaw gripper this configuration means the open or closed state of the gripper is influenced by all the joints. \\
-To argue: \
+2. The Gripper being connected to all of them is kind of neutral sense for me atleast. Assuming it is a parallel jaw gripper this configuration means the open or closed state of the gripper is influenced by all the joints. 
+
+To argue: 
+
 * #### When/Why it makes Sense ? 
 May be in cases where we need Global influence of all the joints it is needed to have this configuration. Where every joint kind of influences the gripper. 
 Not sure exactly where this can be used but I'm assuming complex manipulation or sensitive task based grasping might need this.
