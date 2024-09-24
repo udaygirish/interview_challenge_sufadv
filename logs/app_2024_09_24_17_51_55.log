@@ -1,0 +1,5 @@
+2024-09-24 17:51:55 - body_transformer_logger - INFO - Model Input Shape: torch.Size([32, 7])
+2024-09-24 17:51:55 - body_transformer_logger - INFO - Model Output Shape: torch.Size([32, 7])
+2024-09-24 17:51:55 - body_transformer_logger - INFO - ====================
+2024-09-24 17:51:55 - body_transformer_logger - INFO - Model Summary: 
+2024-09-24 17:51:55 - body_transformer_logger - INFO - ====================

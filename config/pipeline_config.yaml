@@ -1,0 +1,20 @@
+bot_mix_transformer:
+    num_heads : 4
+    num_layers : 3
+    feedforward_dim : 128
+    dropout : 0.1
+    d_model : 64
+
+robot:
+    description: "UR5"
+    num_joints: 6
+    num_nodes: 7 
+    gripper_joint: "True"
+    input_dim: 1 
+    output_dim: 1
+    gripper_link_to_all_joints: "True"
+
+
+data:
+    path: "dataset/replay_buffer.zarr"
+    batch_size: 32

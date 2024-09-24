@@ -1,0 +1,5 @@
+numpy
+zarr
+torch
+torchinfo
+argparse

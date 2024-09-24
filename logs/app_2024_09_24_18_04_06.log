@@ -1,0 +1,17 @@
+2024-09-24 18:04:07 - body_transformer_logger - INFO - Processing sequence incrementally with KV Cache:
+2024-09-24 18:04:07 - body_transformer_logger - INFO - Time step 0: Output Shape: torch.Size([32, 7])
+2024-09-24 18:04:07 - body_transformer_logger - INFO - Time step 1: Output Shape: torch.Size([32, 7])
+2024-09-24 18:04:07 - body_transformer_logger - INFO - Time step 2: Output Shape: torch.Size([32, 7])
+2024-09-24 18:04:07 - body_transformer_logger - INFO - Time step 3: Output Shape: torch.Size([32, 7])
+2024-09-24 18:04:07 - body_transformer_logger - INFO - Time step 4: Output Shape: torch.Size([32, 7])
+2024-09-24 18:04:07 - body_transformer_logger - INFO - Time step 5: Output Shape: torch.Size([32, 7])
+2024-09-24 18:04:07 - body_transformer_logger - INFO - Time step 6: Output Shape: torch.Size([32, 7])
+2024-09-24 18:04:07 - body_transformer_logger - INFO - Time step 7: Output Shape: torch.Size([32, 7])
+2024-09-24 18:04:07 - body_transformer_logger - INFO - Time step 8: Output Shape: torch.Size([32, 7])
+2024-09-24 18:04:07 - body_transformer_logger - INFO - Time step 9: Output Shape: torch.Size([32, 7])
+2024-09-24 18:04:07 - body_transformer_logger - INFO - Processing entire input without KV Cache:
+2024-09-24 18:04:07 - body_transformer_logger - INFO - Model Input Shape: torch.Size([32, 7])
+2024-09-24 18:04:07 - body_transformer_logger - INFO - Model Output Shape: torch.Size([32, 7])
+2024-09-24 18:04:07 - body_transformer_logger - INFO - ====================
+2024-09-24 18:04:07 - body_transformer_logger - INFO - Model Summary: 
+2024-09-24 18:04:07 - body_transformer_logger - INFO - ====================
