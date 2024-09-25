@@ -38,3 +38,11 @@ stability.
 
 * #### When / Why it does not makes sense ? 
 For Simpler applications this simply does not makes sense except overcomplicating the pipeline. So In Simpler robotic systems or simple robot works such as Pick and Place as this does not make much sense with respect to the complexity it adds. Especially, in these case as the last joint is already attending back to the sequential joints before adding gripper alone to last joint might suffice.
+
+
+
+### CREDITS
+
+* Paper Implementation
+* There are some places where I struggled a bit with shapes and the code for Masked Attention  especially from scratch, Wanted to mention I took help of Claude AI.
+* Also used CoPilot for AutoGeneration of Initial Comments and made edits on them. - Easy and efficient - As I  like a well documented code

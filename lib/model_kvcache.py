@@ -1,47 +1,47 @@
 import torch
 import torch.nn as nn
 import numpy as np
+import os 
 import sys 
-import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
-from lib.masked_transformer import MaskedTransformerEncoderLayer, MaskedTransformerEncoder
+
+from lib.masked_transformer_kvcache import MaskedTransformerEncoderLayer, MaskedTransformerEncoder
+from lib.unmasked_transformer_kvcache import TransformerEncoderLayer, TransformerEncoder
 from lib.helpers import adjacency_matrix_torch
 from lib.model_helpers import PositionalEncoding
 
-class BoTMix(nn.Module):
+class BoTMixWithKVCache(nn.Module):
     """
-    BoTMix is a neural network model that combines masked and unmasked transformer encoder layers
-    for processing sequences of joint data.
+    BoTMixWithKVCache is a neural network module that combines masked and unmasked transformer encoder layers
+    with key-value caching for efficient sequence processing.
     Args:
         num_joints (int): Number of joints in the input data.
         d_model (int): Dimension of the model.
-        nhead (int): Number of heads in the multiheadattention models.
+        nhead (int): Number of attention heads.
         num_layers (int): Number of encoder layers.
-        dim_feedforward (int, optional): Dimension of the feedforward network model. Default is 2048.
-        dropout (float, optional): Dropout value. Default is 0.1.
-        adjacency_matrix (torch.Tensor, optional): Predefined adjacency matrix. Default is None.
-        device (torch.device, optional): Device to run the model on. Default is None.
+        dim_feedforward (int, optional): Dimension of the feedforward network. Default is 2048.
+        dropout (float, optional): Dropout rate. Default is 0.1.
+        adjacency_matrix (torch.Tensor, optional): Predefined adjacency matrix. If None, a default matrix is created.
+        device (torch.device, optional): Device to run the model on. If None, it defaults to CUDA if available, otherwise CPU.
     Attributes:
         num_joints (int): Number of joints in the input data.
-        tokenizer (nn.Linear): Linear layer to tokenize the input data.
-        positional_encoding (PositionalEncoding): Positional encoding layer.
-        encoder (nn.ModuleList): List of transformer encoder layers, alternating between masked and unmasked.
-        detokenizer (nn.Linear): Linear layer to detokenize the output data.
+        num_layers (int): Number of encoder layers.
+        tokenizer (nn.Linear): Linear layer for tokenizing input data.
+        positional_encoding (PositionalEncoding): Positional encoding module.
+        encoder (nn.ModuleList): List of transformer encoder layers.
+        detokenizer (nn.Linear): Linear layer for detokenizing output data.
         adjacency_matrix (torch.Tensor): Adjacency matrix for masking.
         device (torch.device): Device to run the model on.
     Methods:
         create_mask(seq_length):
             Creates a mask for the input sequence based on the adjacency matrix.
-        forward(x):
-            Forward pass of the model.
-            Args:
-                x (torch.Tensor): Input tensor of shape (batch_size, seq_length, 1).
-            Returns:
-                torch.Tensor: Output tensor of shape (batch_size, seq_length).
+        forward(x, kv_cache=None):
+            Forward pass of the model. Processes the input sequence and returns the output and key-value cache.
     """
     def __init__(self, num_joints, d_model, nhead, num_layers, dim_feedforward=2048, dropout=0.1, adjacency_matrix=None, device=None):
         super().__init__()
         self.num_joints = num_joints
+        self.num_layers = num_layers
         
         # Tokenizer
         self.tokenizer = nn.Linear(1, d_model)
@@ -51,11 +51,11 @@ class BoTMix(nn.Module):
         
         # BoT-Mix Encoder
         masked_layer = MaskedTransformerEncoderLayer(d_model, nhead, dim_feedforward, dropout)
-        unmasked_layer = nn.TransformerEncoderLayer(d_model, nhead, dim_feedforward, dropout, batch_first=True)
+        unmasked_layer = TransformerEncoderLayer(d_model, nhead, dim_feedforward, dropout)
         
         self.encoder = nn.ModuleList([
             MaskedTransformerEncoder(masked_layer, 1) if i % 2 == 0
-            else nn.TransformerEncoder(unmasked_layer, 1)
+            else TransformerEncoder(unmasked_layer, 1)
             for i in range(num_layers)
         ])
         
@@ -77,20 +77,15 @@ class BoTMix(nn.Module):
         mask = torch.eye(seq_length) + adjacency_matrix
         return mask.bool().to(self.device)
     
-    def forward(self, x):
+    def forward(self, x, kv_cache=None):
         """
-        Perform a forward pass through the model.
+        Forward pass for the model.
         Args:
             x (torch.Tensor): Input tensor of shape (batch_size, seq_length, 1).
+            kv_cache (list, optional): List of key-value caches for each layer. Defaults to None.
         Returns:
             torch.Tensor: Output tensor of shape (batch_size, seq_length).
-        The forward pass includes the following steps:
-        1. Create a mask based on the sequence length and move it to the same device as the input tensor.
-        2. Tokenize the input tensor.
-        3. Add positional encoding to the tokenized input.
-        4. Pass the encoded input through a series of encoder layers, alternating between masked and unmasked attention layers.
-        5. Detokenize the output of the encoder layers.
-        6. Squeeze the last dimension of the output tensor to match the expected output shape.
+            list: Updated key-value caches for each layer.
         """
         # x shape: (batch_size, seq_length, 1)
         seq_length = x.size(1)
@@ -99,11 +94,14 @@ class BoTMix(nn.Module):
         x = self.tokenizer(x)  # (batch_size, seq_length, d_model)
         x = self.positional_encoding(x)  # Add positional encoding
         
+        if kv_cache is None:
+            kv_cache = [None] * self.num_layers
+        
         for i, layer in enumerate(self.encoder):
             if i % 2 == 0:  # Masked attention layer
-                x = layer(x, mask=mask)
+                x = layer(x, mask=mask, kv_cache=kv_cache[i])
             else:  # Unmasked attention layer
-                x = layer(x)
+                x = layer(x, src_key_padding_mask=None, kv_cache=kv_cache[i])
         
         x = self.detokenizer(x)  # (batch_size, seq_length, 1)
-        return x.squeeze(-1)  # (batch_size, seq_length)
+        return x.squeeze(-1), kv_cache  # (batch_size, seq_length)

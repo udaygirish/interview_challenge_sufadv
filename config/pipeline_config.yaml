@@ -28,7 +28,7 @@
 bot_mix_transformer:
     num_heads : 4
     num_layers : 3
-    feedforward_dim : 128
+    feedforward_dim : 256
     dropout : 0.1
     d_model : 64
 
