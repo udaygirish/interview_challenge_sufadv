@@ -11,6 +11,7 @@ Please visit RUN_INSTRUCTIONS.md for the Instructions
 
 
 ---
+---
 ### BONUS 
 
 #### Question:
@@ -39,8 +40,8 @@ stability.
 * #### When / Why it does not makes sense ? 
 For Simpler applications this simply does not makes sense except overcomplicating the pipeline. So In Simpler robotic systems or simple robot works such as Pick and Place as this does not make much sense with respect to the complexity it adds. Especially, in these case as the last joint is already attending back to the sequential joints before adding gripper alone to last joint might suffice.
 
-
-
+---
+---
 ### CREDITS
 
 * Paper Implementation
