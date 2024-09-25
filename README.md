@@ -47,3 +47,8 @@ For Simpler applications this simply does not makes sense except overcomplicatin
 * Paper Implementation
 * There are some places where I struggled a bit with shapes and the code for Masked Attention  especially from scratch, Wanted to mention I took help of Claude AI.
 * Also used CoPilot for AutoGeneration of Initial Comments and made edits on them. - Easy and efficient - As I  like a well documented code
+
+
+---
+### NOTES
+* Tried KV Cache Implementation got it working but kind of  supermessy but slow. Still checking why!

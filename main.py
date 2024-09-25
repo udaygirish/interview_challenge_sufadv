@@ -21,6 +21,8 @@ from lib.model import BoTMix
 from lib.model_kvcache import BoTMixWithKVCache
 from lib.helpers import adjacency_matrix_torch
 from utils.logger import logger
+# Compare Performance
+from compare_performance import compare_models_performance
 
 # Prevent Python from generating a .pyc file
 sys.dont_write_bytecode = True
@@ -100,11 +102,14 @@ def main(args):
 
     # Move the model to the device
     model = model.to(args.device)
+    
+    
 
     # Summary of the Model
     logger.info("=" * 20)
     logger.info("Model Summary: ")
-    summary(model, input_size=(1, 7, 1))  # Assuming input shape is (batch_size, num_joints, 1)
+    # Print the model summary --> Logger
+    logger.info(summary(model, input_size=(32, 7, 1)))
     logger.info("=" * 20)
 
     # Get joints, actions and episode end indices
@@ -114,6 +119,11 @@ def main(args):
     # Inference Loop 
     avg_mse = inference_loop(model, joints, actions, episode_end_idx, args.device)
     logger.info(f"TEST INFERENCE LOOP Average MSE: {avg_mse:.6f}")
+    
+    #logger.info("=====================================================")
+    #logger.info("Running Model Performance Comparison... with and without KV Cache")
+    # In the main function, replace the inference_loop call with:
+    #compare_models_performance(config, adjacency_matrix, joints, actions, episode_end_idx, args.device)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -122,3 +132,8 @@ if __name__ == "__main__":
     parser.add_argument('--kvcache', action='store_true')
     args = parser.parse_args()
     main(args)
+    
+    
+    
+    
+    

@@ -97,6 +97,21 @@ class TransformerEncoderLayer(nn.Module):
         return src
 
 class TransformerEncoder(nn.Module):
+    """
+    TransformerEncoder is a stack of N encoder layers.
+    Args:
+        encoder_layer (nn.Module): An instance of the encoder layer to be used.
+        num_layers (int): The number of encoder layers to stack.
+    Methods:
+        forward(src, src_key_padding_mask=None, kv_cache=None):
+            Passes the input through the encoder layers.
+            Args:
+                src (Tensor): The input sequence to the encoder.
+                src_key_padding_mask (Optional[Tensor]): The mask for the src keys per batch.
+                kv_cache (Optional[List[Optional[Tensor]]]): A list of key-value caches for each layer.
+            Returns:
+                Tensor: The output of the encoder.
+    """
     def __init__(self, encoder_layer, num_layers):
         super().__init__()
         self.layers = nn.ModuleList([encoder_layer for _ in range(num_layers)])
